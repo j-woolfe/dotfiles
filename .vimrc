@@ -42,7 +42,7 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
 " Better netrw
-Plug 'tpope/vim-vinegar'
+Plug 'jeetsukumaran/vim-filebeagle'
 
 " FZF Integration
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -82,7 +82,7 @@ let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
 let g:airline#extensions#tabline#formatter = 'default'
 let g:airline#extensions#tabline#tab_min_count = 2
-let g:airline#extensions#tabline#buffer_min_count = 2
+let g:airline#extensions#tabline#buffer_min_count = 2 
 
 " FZF bindings
 " <C-P> for searching for line in directory with RipGrep
