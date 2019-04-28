@@ -44,6 +44,10 @@ Plug 'vim-airline/vim-airline-themes'
 " Better netrw
 Plug 'tpope/vim-vinegar'
 
+" FZF Integration
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+
 call plug#end()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -80,6 +84,9 @@ let g:airline#extensions#tabline#formatter = 'default'
 let g:airline#extensions#tabline#tab_min_count = 2
 let g:airline#extensions#tabline#buffer_min_count = 2
 
+" FZF bindings
+" <C-P> for searching for line in directory with RipGrep
+nnoremap <c-p> :Rg<cr>
 
 " Set cursor by mode from https://vim.fandom.com/wiki/Change_cursor_shape_in_different_modes
 " Had issues with cursor disappearing
