@@ -37,10 +37,12 @@ Plug 'tpope/vim-fugitive'
 " Add bindings for surrounding objects
 Plug 'tpope/vim-surround'
 
-"Airline statusline and themes
+" Airline statusline and themes
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
+" Better netrw
+Plug 'tpope/vim-vinegar'
 
 call plug#end()
 
@@ -51,9 +53,6 @@ call plug#end()
 " Enable pyflakes linter for python
 let g:ale_linters = {'python': ['pyflakes']}
 call ale#Set('python_pyflakes_executable', 'pyflakes3')
-
-"Leave gutter open always
-let g:ale_sign_column_always = 1
 
 " YouCompleteMe
 " Disable automatic preview window
