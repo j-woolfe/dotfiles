@@ -48,6 +48,9 @@ Plug 'jeetsukumaran/vim-filebeagle'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
+" Language support
+Plug 'sheerun/vim-polyglot'
+
 call plug#end()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -88,20 +91,8 @@ let g:airline#extensions#tabline#buffer_min_count = 2
 " <C-P> for searching for line in directory with RipGrep
 nnoremap <c-p> :Rg<cr>
 
-" Set cursor by mode from https://vim.fandom.com/wiki/Change_cursor_shape_in_different_modes
-" Had issues with cursor disappearing
-" set guicursor&
-
-if has("autocmd")
-  au VimEnter,InsertLeave * silent execute '!echo -ne "\e[1 q"' | redraw!
-  au InsertEnter,InsertChange *
-    \ if v:insertmode == 'i' |
-    \   silent execute '!echo -ne "\e[5 q"' | redraw! |
-    \ elseif v:insertmode == 'r' |
-    \   silent execute '!echo -ne "\e[3 q"' | redraw! |
-    \ endif
-  au VimLeave * silent execute '!echo -ne "\e[ q"' | redraw!
-endif
+" Disable whitespace highlighting from vim-polyglot
+let g:python_highlight_space_errors = 0
 
 " Lots of settings from: https://github.com/amix/vimrc/blob/master/vimrcs/basic.vim
 
@@ -129,6 +120,11 @@ command W w !sudo tee % > /dev/null
 
 " Enable mouse support
 set mouse=a
+
+" Sensible folding
+set foldmethod=indent
+set foldlevel=99
+nnoremap <leader>z za
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
@@ -193,11 +189,27 @@ set tm=500
 set number
 set relativenumber
 
+" Set cursor by mode from https://vim.fandom.com/wiki/Change_cursor_shape_in_different_modes
+" Had issues with cursor disappearing
+" set guicursor&
+
+if has("autocmd")
+  au VimEnter,InsertLeave * silent execute '!echo -ne "\e[1 q"' | redraw!
+  au InsertEnter,InsertChange *
+    \ if v:insertmode == 'i' |
+    \   silent execute '!echo -ne "\e[5 q"' | redraw! |
+    \ elseif v:insertmode == 'r' |
+    \   silent execute '!echo -ne "\e[3 q"' | redraw! |
+    \ endif
+  au VimLeave * silent execute '!echo -ne "\e[ q"' | redraw!
+endif
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Fonts
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Enable syntax highlighting
 syntax enable
+syntax on
 
 " Enable 256 colors palette in Gnome Terminal
 if $COLORTERM == 'gnome-terminal'
