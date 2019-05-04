@@ -61,6 +61,10 @@ call plug#end()
 let g:ale_linters = {'python': ['pyflakes']}
 call ale#Set('python_pyflakes_executable', 'pyflakes3')
 
+" Disable linting in insert mode
+let g:ale_lint_on_text_changed = 'normal'
+let g:ale_lint_on_insert_leave = 1
+
 " YouCompleteMe
 " Disable automatic preview window
 set completeopt-=preview
