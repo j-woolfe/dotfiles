@@ -217,6 +217,7 @@ syntax on
 
 " Set .asm files to use MIPS syntax highlighting
 " Based on https://stackoverflow.com/questions/11666170/persistent-set-syntax-for-a-given-filetype
+" Uses syntax file from https://github.com/harenome/vim-mipssyntax put into vim-polyglot /syntax
 au BufRead,BufNewFile *.asm set filetype=mips 
 
 " Enable 256 colors palette in Gnome Terminal
