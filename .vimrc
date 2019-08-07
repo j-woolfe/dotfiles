@@ -11,7 +11,7 @@ endif
 call plug#begin('~/.vim/plugged')
 
 " Ale autocomplete and linting
-Plug 'w0rp/ale'
+Plug 'dense-analysis/ale'
 
 " YouCompleteMe Autocompletion. Requires compiled component
 Plug 'valloric/youcompleteme'
@@ -57,8 +57,8 @@ call plug#end()
 " => Plugin Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ALE
-" Enable pyflakes linter for python
-let g:ale_linters = {'python': ['pyflakes']}
+" Enable pyflakes linter for python and disable asm linting
+let g:ale_linters = {'python': ['pyflakes'], 'asm' : []}
 call ale#Set('python_pyflakes_executable', 'pyflakes3')
 
 " Disable linting in insert mode
@@ -89,7 +89,7 @@ let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
 let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
 let g:airline#extensions#tabline#tab_min_count = 2
-let g:airline#extensions#tabline#buffer_min_count = 2 
+let g:airline#extensions#tabline#buffer_min_count = 2
 
 " FZF bindings
 " <C-P> for searching for line in directory with RipGrep
