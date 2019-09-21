@@ -134,6 +134,7 @@ nnoremap <leader>z za
 " => VIM user interface
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Toggle ColorColumn at 90 chars
+" Bound to <leader>cc
 nnoremap <silent> <leader>cc :execute "set colorcolumn=" . (&colorcolumn == "" ? "90" : "")<CR>
 
 " Keep 7 lines on screen
