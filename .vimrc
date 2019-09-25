@@ -119,6 +119,9 @@ map <Space> <leader>
 " Fast saving with <leader> w
 nmap <leader>w :w!<cr>
 
+" Rebind Wq to wq
+command! Wq wq
+
 " :W for sudo save
 command W w !sudo tee % > /dev/null
 
