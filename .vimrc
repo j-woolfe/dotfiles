@@ -59,7 +59,7 @@ call plug#end()
 " ALE
 " Enable pyflakes linter for python and disable asm linting
 let g:ale_linters = {'python': ['pyflakes'], 'asm' : []}
-call ale#Set('python_pyflakes_executable', 'pyflakes3')
+call ale#Set('python_pyflakes_executable', 'pyflakes')
 
 " Disable linting in insert mode
 let g:ale_lint_on_text_changed = 'normal'
