@@ -104,6 +104,11 @@ let g:python_highlight_space_errors = 0
 " Disable Latex-box from vim-polyglot and use vimtex instead
 let g:polyglot_disabled = ['latex']
 
+" Use tectonic in vimtex
+let g:vimtex_compiler_method = 'tectonic'
+" Compile on save
+autocmd FileType tex autocmd BufWritePre <buffer> :VimtexCompile
+
 " Lots of settings from: https://github.com/amix/vimrc/blob/master/vimrcs/basic.vim
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
