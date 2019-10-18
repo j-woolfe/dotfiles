@@ -106,6 +106,7 @@ let g:polyglot_disabled = ['latex']
 
 " Use tectonic in vimtex
 let g:vimtex_compiler_method = 'tectonic'
+
 " Compile on save
 autocmd FileType tex autocmd BufWritePre <buffer> :VimtexCompile
 
