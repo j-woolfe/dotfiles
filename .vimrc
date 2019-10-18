@@ -51,6 +51,9 @@ Plug 'junegunn/fzf.vim'
 " Language support
 Plug 'sheerun/vim-polyglot'
 
+" Latex Integration
+Plug 'lervag/vimtex'
+
 call plug#end()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -97,6 +100,9 @@ nnoremap <c-p> :Rg<cr>
 
 " Disable whitespace highlighting from vim-polyglot
 let g:python_highlight_space_errors = 0
+
+" Disable Latex-box from vim-polyglot and use vimtex instead
+let g:polyglot_disabled = ['latex']
 
 " Lots of settings from: https://github.com/amix/vimrc/blob/master/vimrcs/basic.vim
 
