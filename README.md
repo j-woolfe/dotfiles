@@ -15,3 +15,6 @@ molokaiTransparent.vim --> /.vim/colors/molokaiTransparent.vim
 
 Vim-Airline theme:
 modified_murmur --> ~/.vim/plugged/vim-airline-themes/autoload/airline/themes/modified_murmur.vim
+
+Kitty config:
+kitty.cong --> ~/.config/kitty/kitty.conf
