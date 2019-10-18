@@ -17,4 +17,5 @@ Vim-Airline theme:
 modified_murmur --> ~/.vim/plugged/vim-airline-themes/autoload/airline/themes/modified_murmur.vim
 
 Kitty config:
+Requires Fira Code font
 kitty.cong --> ~/.config/kitty/kitty.conf
