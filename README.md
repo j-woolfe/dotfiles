@@ -21,4 +21,5 @@ Requires Fira Code font
 kitty.cong --> ~/.config/kitty/kitty.conf
 
 Ranger config
+Requires trash-cli
 rc.conf --> ~/.config/ranger/rc.conf
