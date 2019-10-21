@@ -54,6 +54,9 @@ Plug 'sheerun/vim-polyglot'
 " Latex Integration
 Plug 'lervag/vimtex'
 
+" Python Black command support
+Plug 'psf/black'
+
 call plug#end()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -110,6 +113,9 @@ let g:vimtex_compiler_method = 'tectonic'
 " Compile on save
 autocmd FileType tex autocmd BufWritePre <buffer> :VimtexCompile
 
+" Run black with <leader>bb
+nnoremap <leader>bb :Black<CR>
+
 " Lots of settings from: https://github.com/amix/vimrc/blob/master/vimrcs/basic.vim
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -133,6 +139,9 @@ nmap <leader>w :w!<cr>
 
 " Rebind Wq to wq
 command! Wq wq
+
+" Rebind Q to q
+command! Q q
 
 " :W for sudo save
 command W w !sudo tee % > /dev/null
