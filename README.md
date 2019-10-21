@@ -19,3 +19,6 @@ modified_murmur --> ~/.vim/plugged/vim-airline-themes/autoload/airline/themes/mo
 Kitty config:
 Requires Fira Code font
 kitty.cong --> ~/.config/kitty/kitty.conf
+
+Ranger config
+rc.conf --> ~/.config/ranger/rc.conf
