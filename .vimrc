@@ -54,8 +54,14 @@ Plug 'sheerun/vim-polyglot'
 " Latex Integration
 Plug 'lervag/vimtex'
 
-" Python Black command support
+" Python Black command upport
 Plug 'psf/black'
+
+" Tmux pane navigation
+Plug 'christoomey/vim-tmux-navigator'
+
+" Tmuxairline integration
+Plug 'edkolev/tmuxline.vim'
 
 call plug#end()
 
@@ -137,6 +143,9 @@ map <Space> <leader>
 " Fast saving with <leader> w
 nmap <leader>w :w!<cr>
 
+" Fast exit with <leader>q
+nmap <leader>q :q<cr>
+
 " Rebind Wq to wq
 command! Wq wq
 
@@ -179,7 +188,7 @@ endif
 set ruler
 
 " Height of the command bar
-set cmdheight=2
+set cmdheight=1
 
 " Hide buffer when its abandoned
 set hid
@@ -248,10 +257,8 @@ syntax on
 " Uses syntax file from https://github.com/harenome/vim-mipssyntax put into vim-polyglot /syntax
 au BufRead,BufNewFile *.asm set filetype=mips 
 
-" Enable 256 colors palette in Gnome Terminal
-if $COLORTERM == 'gnome-terminal'
-    set t_Co=256
-endif
+" Enable 256 colors palette
+set t_Co=256
 
 " Set colors to molokai transparent from https://github.com/Znuff/molokai
 try
@@ -336,11 +343,9 @@ endfunction
 " => Moving around, tabs, windows and buffers
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" Smart way to move between windows
-map <C-j> <C-W>j
-map <C-k> <C-W>k
-map <C-h> <C-W>h
-map <C-l> <C-W>l
+" New bindings to open splits
+map <leader>\ :vsplit<cr>
+map <leader>- :split<cr>
 
 " Close the current buffer
 map <leader>bd :Bclose<cr>:tabclose<cr>gT
@@ -350,23 +355,6 @@ map <leader>ba :bufdo bd<cr>
 
 map <leader>l :bnext<cr>
 map <leader>h :bprevious<cr>
-
-" Useful mappings for managing tabs
-map <leader>tn :tabnew<cr>
-map <leader>to :tabonly<cr>
-map <leader>tc :tabclose<cr>
-map <leader>tm :tabmove
-map <leader>t<leader> :tabnext
-
-" Let 'tl' toggle between this and the last accessed tab
-let g:lasttab = 1
-nmap <Leader>tl :exe "tabn ".g:lasttab<CR>
-au TabLeave * let g:lasttab = tabpagenr()
-
-
-" Opens a new tab with the current buffer's path
-" Super useful when editing files in the same directory
-map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
 
 " Return to last edit position when opening files
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif

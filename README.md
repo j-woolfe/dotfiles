@@ -20,6 +20,10 @@ Kitty config:
 Requires Fira Code font
 kitty.cong --> ~/.config/kitty/kitty.conf
 
-Ranger config
+Ranger config:
 Requires trash-cli
 rc.conf --> ~/.config/ranger/rc.conf
+
+Tmux config:
+.tmux.conf --> ~/.tmux.conf
+tmuxline.snapshot --> ~/code/dotfiles/tmuxline.snapshot
