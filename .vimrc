@@ -29,7 +29,7 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-commentary'
 
 " Add and delete brackets in pairs
-Plug 'jiangmiao/auto-pairs'
+Plug 'tmsvg/pear-tree'
 
 " Git wrapper
 Plug 'tpope/vim-fugitive'
@@ -160,6 +160,20 @@ set foldmethod=indent
 set foldlevel=99
 nnoremap <leader>z za
 
+" Refreshes some plugins, default is 4000ms 
+set updatetime=500
+
+" Use persistent undo history, creating dir if it doesn't exist
+if !isdirectory("/tmp/.vim-undo-dir")
+        call mkdir("/tmp/.vim-undo-dir", "", 0700)
+    endif
+    set undodir=/tmp/.vim-undo-dir
+    set undofile
+
+" Delete comment character when joining commented lines
+set formatoptions+=j
+
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -223,7 +237,7 @@ set novisualbell
 set t_vb=
 set tm=500
 
-" Enable line numbers (absolute on current line, absolute elsewhere)
+" Enable line numbers (absolute on current line, relative elsewhere)
 set number
 set relativenumber
 
