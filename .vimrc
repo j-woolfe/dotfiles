@@ -143,9 +143,6 @@ map <Space> <leader>
 " Fast saving with <leader> w
 nmap <leader>w :w!<cr>
 
-" Fast exit with <leader>q
-nmap <leader>q :q<cr>
-
 " Rebind Wq to wq
 command! Wq wq
 
