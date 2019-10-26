@@ -29,4 +29,4 @@ rc.conf --> ~/.config/ranger/rc.conf
 
 Tmux config:
 .tmux.conf --> ~/.tmux.conf
-tmuxline.snapshot --> ~/code/dotfiles/tmuxline.snapshot
+tmuxline.snapshot --> ~/.tmux/tmuxline.snapshot
