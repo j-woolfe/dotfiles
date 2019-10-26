@@ -6,6 +6,9 @@ Vim config:
 Fish Config:
 config.fish --> ~/.config/fish/config.fish
 
+Fish plugins using Fisher:
+fishfile --> ~/.config/fish/fishfile
+
 Fish prompt:
 fish_prompt.fish --> ~/.config/fish/functions/fish_prompt.fish
 fish_print_git_action.fish --> ~/.config/fish/functions/fish_print_git_action.fish
