@@ -4,7 +4,7 @@
 " Install vim-plug if not already installed
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
@@ -113,6 +113,9 @@ let g:python_highlight_space_errors = 0
 " Disable Latex-box from vim-polyglot and use vimtex instead
 let g:polyglot_disabled = ['latex']
 
+" Fix CSV key binding conflict with leader
+let g:csv_nomap_space = 1
+
 " Use tectonic in vimtex
 let g:vimtex_compiler_method = 'tectonic'
 
@@ -121,6 +124,7 @@ autocmd FileType tex autocmd BufWritePre <buffer> :VimtexCompile
 
 " Run black with <leader>bb
 nnoremap <leader>bb :Black<CR>
+
 
 " Lots of settings from: https://github.com/amix/vimrc/blob/master/vimrcs/basic.vim
 
@@ -136,6 +140,9 @@ filetype indent on
 
 " Auto read modified files
 set autoread
+
+" Keep indentation level
+set autoindent
 
 " Set leader to space
 map <Space> <leader>
@@ -165,13 +172,32 @@ set updatetime=500
 
 " Use persistent undo history, creating dir if it doesn't exist
 if !isdirectory("/tmp/.vim-undo-dir")
-        call mkdir("/tmp/.vim-undo-dir", "", 0700)
-    endif
-    set undodir=/tmp/.vim-undo-dir
-    set undofile
+  call mkdir("/tmp/.vim-undo-dir", "", 0700)
+endif
+set undodir=/tmp/.vim-undo-dir
+set undofile
 
 " Delete comment character when joining commented lines
 set formatoptions+=j
+
+" Faster timeout between key presses
+if !has('nvim') && &ttimeoutlen == -1
+  set ttimeout
+  set ttimeoutlen=200
+endif
+
+" Improves performance in files with long lines
+if &synmaxcol == 3000
+  set synmaxcol=500
+endif
+
+" Load matchit.vim if user hasn't installed a newer version
+if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &rtp) ==# ''
+  runtime! macros/matchit.vim
+endif
+
+" Fix @ symbols at end of file if line is wrapped
+set display+=lastline
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -182,17 +208,18 @@ set formatoptions+=j
 nnoremap <silent> <leader>cc :execute "set colorcolumn=" . (&colorcolumn == "" ? "88" : "")<CR>
 
 " Keep 7 lines on screen
-set so=7
+set scrolloff=7
 
 " Enable wild menu
+set wildmode=longest:full,full
 set wildmenu
 
 " Ignore compiled files
 set wildignore=*.o,*~,*.pyc
 if has("win16") || has("win32")
-    set wildignore+=.git\*,.hg\*,.svn\*
+  set wildignore+=.git\*,.hg\*,.svn\*
 else
-    set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.DS_Store
+  set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.DS_Store
 endif
 
 " Always show current position
@@ -248,11 +275,11 @@ set relativenumber
 if has("autocmd")
   au VimEnter,InsertLeave * silent execute '!echo -ne "\e[1 q"' | redraw!
   au InsertEnter,InsertChange *
-    \ if v:insertmode == 'i' |
-    \   silent execute '!echo -ne "\e[5 q"' | redraw! |
-    \ elseif v:insertmode == 'r' |
-    \   silent execute '!echo -ne "\e[3 q"' | redraw! |
-    \ endif
+        \ if v:insertmode == 'i' |
+        \   silent execute '!echo -ne "\e[5 q"' | redraw! |
+        \ elseif v:insertmode == 'r' |
+        \   silent execute '!echo -ne "\e[3 q"' | redraw! |
+        \ endif
   au VimLeave * silent execute '!echo -ne "\e[ q"' | redraw!
 endif
 
@@ -273,7 +300,7 @@ set t_Co=256
 
 " Set colors to molokai transparent from https://github.com/Znuff/molokai
 try
-    colorscheme molokaiTransparent
+  colorscheme molokaiTransparent
 catch
 endtry
 
@@ -291,15 +318,15 @@ set noswapfile
 
 " Delete trailing white space on save, useful for some filetypes
 fun! CleanExtraSpaces()
-    let save_cursor = getpos(".")
-    let old_query = getreg('/')
-    silent! %s/\s\+$//e
-    call setpos('.', save_cursor)
-    call setreg('/', old_query)
+  let save_cursor = getpos(".")
+  let old_query = getreg('/')
+  silent! %s/\s\+$//e
+  call setpos('.', save_cursor)
+  call setreg('/', old_query)
 endfun
 
 if has("autocmd")
-    autocmd BufWritePre *.txt,*.js,*.py,*.wiki,*.sh,*.coffee :call CleanExtraSpaces()
+  autocmd BufWritePre *.txt,*.js,*.py,*.wiki,*.sh,*.coffee :call CleanExtraSpaces()
 endif
 
 
@@ -333,20 +360,20 @@ vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
 vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
 
 function! VisualSelection(direction, extra_filter) range
-    let l:saved_reg = @"
-    execute "normal! vgvy"
+  let l:saved_reg = @"
+  execute "normal! vgvy"
 
-    let l:pattern = escape(@", "\\/.*'$^~[]")
-    let l:pattern = substitute(l:pattern, "\n$", "", "")
+  let l:pattern = escape(@", "\\/.*'$^~[]")
+  let l:pattern = substitute(l:pattern, "\n$", "", "")
 
-    if a:direction == 'gv'
-        call CmdLine("Ack '" . l:pattern . "' " )
-    elseif a:direction == 'replace'
-        call CmdLine("%s" . '/'. l:pattern . '/')
-    endif
+  if a:direction == 'gv'
+    call CmdLine("Ack '" . l:pattern . "' " )
+  elseif a:direction == 'replace'
+    call CmdLine("%s" . '/'. l:pattern . '/')
+  endif
 
-    let @/ = l:pattern
-    let @" = l:saved_reg
+  let @/ = l:pattern
+  let @" = l:saved_reg
 endfunction
 
 
@@ -373,26 +400,26 @@ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g
 " Don't close window, when deleting a buffer
 command! Bclose call <SID>BufcloseCloseIt()
 function! <SID>BufcloseCloseIt()
-    let l:currentBufNum = bufnr("%")
-    let l:alternateBufNum = bufnr("#")
+  let l:currentBufNum = bufnr("%")
+  let l:alternateBufNum = bufnr("#")
 
-    if buflisted(l:alternateBufNum)
-        buffer #
-    else
-        bnext
-    endif
+  if buflisted(l:alternateBufNum)
+    buffer #
+  else
+    bnext
+  endif
 
-    if bufnr("%") == l:currentBufNum
-        new
-    endif
+  if bufnr("%") == l:currentBufNum
+    new
+  endif
 
-    if buflisted(l:currentBufNum)
-        execute("bdelete! ".l:currentBufNum)
-    endif
+  if buflisted(l:currentBufNum)
+    execute("bdelete! ".l:currentBufNum)
+  endif
 endfunction
 
 function! CmdLine(str)
-    call feedkeys(":" . a:str)
+  call feedkeys(":" . a:str)
 endfunction
 
 
@@ -401,5 +428,3 @@ endfunction
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Remap VIM 0 to first non-blank character
 map 0 ^
-
-
