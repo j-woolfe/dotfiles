@@ -118,6 +118,8 @@ let g:csv_nomap_space = 1
 
 " Use tectonic in vimtex
 let g:vimtex_compiler_method = 'tectonic'
+let g:vimtex_fold_enabled = 0
+let g:tex_conceal = ""
 
 " Compile on save
 autocmd FileType tex autocmd BufWritePre <buffer> :VimtexCompile
@@ -125,6 +127,8 @@ autocmd FileType tex autocmd BufWritePre <buffer> :VimtexCompile
 " Run black with <leader>bb
 nnoremap <leader>bb :Black<CR>
 
+" Don't auto update tmuxline when opening vim to avoid overwriting snapshot
+let g:airline#extensions#tmuxline#enabled = 0
 
 " Lots of settings from: https://github.com/amix/vimrc/blob/master/vimrcs/basic.vim
 
