@@ -10,11 +10,11 @@ endif
 
 call plug#begin('~/.vim/plugged')
 
-" Ale autocomplete and linting
+" Ale for linting
 Plug 'dense-analysis/ale'
 
-" YouCompleteMe Autocompletion. Requires compiled component
-Plug 'valloric/youcompleteme'
+" COC for autocomplete and LSP
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " Rainbow Brackets
 Plug 'junegunn/rainbow_parentheses.vim'
@@ -54,7 +54,7 @@ Plug 'sheerun/vim-polyglot'
 " Latex Integration
 Plug 'lervag/vimtex'
 
-" Python Black command upport
+" Python Black command support
 Plug 'psf/black'
 
 " Tmux pane navigation
@@ -73,18 +73,54 @@ call plug#end()
 let g:ale_linters = {'python': ['pyflakes'], 'asm' : []}
 call ale#Set('python_pyflakes_executable', 'pyflakes')
 
-" Disable linting in insert mode
-let g:ale_lint_on_text_changed = 'normal'
-let g:ale_lint_on_insert_leave = 1
+" COC 
+" Let ALE handle linting
+call coc#config('diagnostic', {'displayByAle' : 'true'})
 
-" YouCompleteMe
-" Disable automatic preview window
-set completeopt-=preview
+" Use tab for trigger completion with characters ahead and navigate.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
-" Set <leader>d to open docs for function under cursor
-" <leader>D closes an open preview window
-nmap <leader>d :YcmCompleter GetDoc<cr>
-nmap <leader>D :pclose<cr>
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+let g:coc_snippet_next = '<tab>'
+
+" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
+" Coc only does snippet and additional edit on confirm.
+" Additional config required to not conflict with pear-tree
+imap <expr> <CR> !pumvisible() ? "\<Plug>(PearTreeExpand)" : 
+            \complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+
+" Keybind for goto definition
+nmap <silent> gd <Plug>(coc-definition)
+
+" Keybind for renaming current symbol
+nmap <leader>rn <Plug>(coc-rename)
+
+" Use `:Format` to format current buffer
+command! -nargs=0 Format :call CocAction('format')
+
+" COC Extensions
+" 10000 most common words
+" Vimtex support
+" Snippet completions
+" Python support
+call coc#add_extension(
+        \'coc-word',
+        \'coc-vimtex',
+        \'coc-snippets',
+        \'coc-python',
+        \)
+
+" Disable python linting
+call coc#config('python.linting', {'enabled': 'false'})
 
 " Rainbow Parens enable, use for all bracket types and blacklist white
 au VimEnter * RainbowParentheses
@@ -172,7 +208,7 @@ set foldlevel=99
 nnoremap <leader>z za
 
 " Refreshes some plugins, default is 4000ms 
-set updatetime=500
+set updatetime=300
 
 " Use persistent undo history, creating dir if it doesn't exist
 if !isdirectory("/tmp/.vim-undo-dir")
@@ -230,7 +266,7 @@ endif
 set ruler
 
 " Height of the command bar
-set cmdheight=1
+set cmdheight=2
 
 " Hide buffer when its abandoned
 set hid
@@ -432,3 +468,12 @@ endfunction
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Remap VIM 0 to first non-blank character
 map 0 ^
+
+" Create function to trim whitespace
+fun! TrimWhitespace()
+    let l:save = winsaveview()
+    keeppatterns %s/s\s\+$//e
+    call winrestview(l:save)
+endfun
+
+command! TrimWhitespace call TrimWhitespace()

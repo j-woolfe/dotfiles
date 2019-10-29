@@ -1,7 +1,7 @@
 # Uncomment if using anaconda
 # source ~/anaconda3/etc/fish/conf.d/conda.fish
 
-set -U PATH /home/linuxbrew/.linuxbrew/bin $PATH
+# set -U PATH /home/linuxbrew/.linuxbrew/bin $PATH
 
 # FZF settings
 set -gx FZF_DEFAULT_COMMAND 'rg --files --no-ignore --follow --glob \'!.git/*\''
