@@ -217,7 +217,7 @@ set foldmethod=indent
 set foldlevel=99
 nnoremap <leader>z za
 
-" Refreshes some plugins, default is 4000m
+" Refreshes some plugins, default is 4000ms
 set updatetime=300
 
 " Use persistent undo history, creating dir if it doesn't exist
@@ -343,7 +343,7 @@ syntax on
 " Set .asm files to use MIPS syntax highlighting
 " Based on https://stackoverflow.com/questions/11666170/persistent-set-syntax-for-a-given-filetype
 " Uses syntax file from https://github.com/harenome/vim-mipssyntax put into vim-polyglot /syntax
-au BufRead,BufNewFile *.asm set filetype=mip
+au BufRead,BufNewFile *.asm set filetype=mips
 
 " Enable 256 colors palette
 set t_Co=256
