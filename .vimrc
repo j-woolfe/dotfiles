@@ -17,7 +17,7 @@ Plug 'dense-analysis/ale'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " Rainbow Brackets
-Plug 'junegunn/rainbow_parentheses.vim'
+Plug 'luochen1990/rainbow'
 
 " Unimpaired Keybindings
 Plug 'tpope/vim-unimpaired'
@@ -71,9 +71,11 @@ call plug#end()
 " ALE
 " Enable pyflakes linter for python and disable asm linting
 let g:ale_linters = {'python': ['pyflakes'], 'asm' : []}
-call ale#Set('python_pyflakes_executable', 'pyflakes')
 
-" COC 
+" Ale airline integration
+let g:airline#extensions#ale#enabled = 1
+
+" COC
 " Let ALE handle linting
 call coc#config('diagnostic', {'displayByAle' : 'true'})
 
@@ -95,7 +97,7 @@ let g:coc_snippet_next = '<tab>'
 " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
 " Coc only does snippet and additional edit on confirm.
 " Additional config required to not conflict with pear-tree
-imap <expr> <CR> !pumvisible() ? "\<Plug>(PearTreeExpand)" : 
+imap <expr> <CR> !pumvisible() ? "\<Plug>(PearTreeExpand)" :
             \complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
 
 " Keybind for goto definition
@@ -122,10 +124,18 @@ call coc#add_extension(
 " Disable python linting
 call coc#config('python.linting', {'enabled': 'false'})
 
-" Rainbow Parens enable, use for all bracket types and blacklist white
-au VimEnter * RainbowParentheses
-let g:rainbow#pairs = [['(', ')'], ['[', ']'], ['{', '}']]
-let g:rainbow#blacklist = [225]
+" Rainbow Parens enable and set colours
+let g:rainbow_active = 1
+let g:rainbow_conf = {'ctermfgs': [4, 2, 3, 6, 1]}
+
+" Enable pear-tree smart pair
+let g:pear_tree_smart_openers = 1
+let g:pear_tree_smart_closers = 1
+let g:pear_tree_smart_backspace = 1
+let g:pear_tree_timeout = 60
+
+" Disable pear-tree repeatable expand
+let g:pear_tree_repeatable_expand = 0
 
 " Airline theme and font
 let g:airline_powerline_fonts = 1
@@ -207,7 +217,7 @@ set foldmethod=indent
 set foldlevel=99
 nnoremap <leader>z za
 
-" Refreshes some plugins, default is 4000ms 
+" Refreshes some plugins, default is 4000m
 set updatetime=300
 
 " Use persistent undo history, creating dir if it doesn't exist
@@ -265,8 +275,8 @@ endif
 " Always show current position
 set ruler
 
-" Height of the command bar
-set cmdheight=2
+" Height of the command bar (COC recommends 2 but it annoys me)
+set cmdheight=1
 
 " Hide buffer when its abandoned
 set hid
@@ -333,7 +343,7 @@ syntax on
 " Set .asm files to use MIPS syntax highlighting
 " Based on https://stackoverflow.com/questions/11666170/persistent-set-syntax-for-a-given-filetype
 " Uses syntax file from https://github.com/harenome/vim-mipssyntax put into vim-polyglot /syntax
-au BufRead,BufNewFile *.asm set filetype=mips 
+au BufRead,BufNewFile *.asm set filetype=mip
 
 " Enable 256 colors palette
 set t_Co=256
