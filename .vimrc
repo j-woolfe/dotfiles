@@ -41,7 +41,8 @@ Plug 'tpope/vim-surround'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
-" Better netrw
+" Filebeagle instead of netrw
+" Ranger doesn't work in splits and is slower
 Plug 'jeetsukumaran/vim-filebeagle'
 
 " FZF Integration
