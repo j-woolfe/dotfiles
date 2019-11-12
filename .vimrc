@@ -69,8 +69,18 @@ call plug#end()
 " => Plugin Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ALE
-" Enable pyflakes linter for python and disable asm linting
-let g:ale_linters = {'python': ['pyflakes'], 'asm' : []}
+" Config Linters
+" Enable pyflakes linter for python
+" Disable asm linting to use MIPS
+" Use RLS before cargo for rust
+let g:ale_linters = {
+            \'python': ['pyflakes'],
+            \'asm' : [],
+            \'rust': ['rls', 'cargo'],
+            \}
+
+" Enable clippy support if installed
+let g:ale_rust_cargo_use_clippy = executable('cargo-clippy')
 
 " Ale airline integration
 let g:airline#extensions#ale#enabled = 1
@@ -114,15 +124,14 @@ command! -nargs=0 Format :call CocAction('format')
 " Vimtex support
 " Snippet completions
 " Python support
+" Rust support
 call coc#add_extension(
         \'coc-word',
         \'coc-vimtex',
         \'coc-snippets',
         \'coc-python',
+        \'coc-rust-analyzer',
         \)
-
-" Disable python linting
-call coc#config('python.linting', {'enabled': 'false'})
 
 " Rainbow Parens enable and set colours
 let g:rainbow_active = 1
@@ -233,7 +242,7 @@ set formatoptions+=j
 " Faster timeout between key presses
 if !has('nvim') && &ttimeoutlen == -1
   set ttimeout
-  set ttimeoutlen=200
+  set ttimeoutlen=400
 endif
 
 " Improves performance in files with long lines
