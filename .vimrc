@@ -55,13 +55,10 @@ Plug 'sheerun/vim-polyglot'
 " Latex Integration
 Plug 'lervag/vimtex'
 
-" Python Black command support
-Plug 'psf/black'
-
 " Tmux pane navigation
 Plug 'christoomey/vim-tmux-navigator'
 
-" Tmuxairline integration
+" Tmux airline integration
 Plug 'edkolev/tmuxline.vim'
 
 call plug#end()
@@ -73,15 +70,28 @@ call plug#end()
 " Config Linters
 " Enable pyflakes linter for python
 " Disable asm linting to use MIPS
-" Use RLS before cargo for rust
+" Use RLS for rust
 let g:ale_linters = {
             \'python': ['pyflakes'],
             \'asm' : [],
-            \'rust': ['rls', 'cargo'],
+            \'rust': ['rls'],
             \}
 
-" Enable clippy support if installed
-let g:ale_rust_cargo_use_clippy = executable('cargo-clippy')
+" Enable rust clippy support if installed
+let g:ale_rust_rls_config = { 
+            \'rust': {
+            \       'clippy_preference' : 'on'
+            \   }
+            \}
+
+" Config formatters
+let g:ale_fixers = {
+            \'python': ['black'],
+            \'rust': ['rustfmt'],
+            \}
+
+" Set <leader>f to format file (overwrites filebeagle binding)
+nmap <leader>f :ALEFix<cr>
 
 " Ale airline integration
 let g:airline#extensions#ale#enabled = 1
@@ -159,6 +169,10 @@ let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
 let g:airline#extensions#tabline#tab_min_count = 2
 let g:airline#extensions#tabline#buffer_min_count = 2
 
+" Filebeagle bindings
+let g:filebeagle_suppress_keymaps = 1
+map <silent> - <Plug>FileBeagleOpenCurrentBufferDir
+
 " FZF bindings
 " <C-P> for searching for line in directory with RipGrep
 nnoremap <c-p> :Rg<cr>
@@ -179,9 +193,6 @@ let g:tex_conceal = ""
 
 " Compile on save
 autocmd FileType tex autocmd BufWritePre <buffer> :VimtexCompile
-
-" Run black with <leader>bb
-nnoremap <leader>bb :Black<CR>
 
 " Don't auto update tmuxline when opening vim to avoid overwriting snapshot
 let g:airline#extensions#tmuxline#enabled = 0
