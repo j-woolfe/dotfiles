@@ -61,6 +61,9 @@ Plug 'christoomey/vim-tmux-navigator'
 " Tmux airline integration
 Plug 'edkolev/tmuxline.vim'
 
+" Vimux for running command in tmux pane
+Plug 'benmills/vimux'
+
 call plug#end()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -71,10 +74,13 @@ call plug#end()
 " Enable pyflakes linter for python
 " Disable asm linting to use MIPS
 " Use RLS for rust
+" Use clangtidy for c/c++
 let g:ale_linters = {
             \'python': ['pyflakes'],
             \'asm' : [],
             \'rust': ['rls'],
+            \'c': ['clangtidy'],
+            \'cpp': ['clangtidy'],
             \}
 
 " Enable rust clippy support if installed
@@ -85,10 +91,16 @@ let g:ale_rust_rls_config = {
             \}
 
 " Config formatters
+" Use clang-format for c\c++
 let g:ale_fixers = {
             \'python': ['black'],
             \'rust': ['rustfmt'],
+            \'c': ['clang-format'],
+            \'cpp': ['clang-format'],
             \}
+
+" Config clang-format to use 4 spaces
+let g:ale_c_clangformat_options = '-style="{IndentWidth: 4}"'
 
 " Set <leader>f to format file (overwrites filebeagle binding)
 nmap <leader>f :ALEFix<cr>
@@ -197,6 +209,24 @@ autocmd FileType tex autocmd BufWritePre <buffer> :VimtexCompile
 " Don't auto update tmuxline when opening vim to avoid overwriting snapshot
 let g:airline#extensions#tmuxline#enabled = 0
 
+" Vimux bindings
+" 'vimux command'
+map <leader>vc :VimuxPromptCommand<cr> 
+" 'rerun'
+map <leader>vv :VimuxRunLastCommand<cr>
+
+" Rust commands
+" 'rust run'
+map <leader>rr :VimuxRunCommand("cargo run")<cr>
+" 'rust build'
+map <leader>rb :VimuxRunCommand("cargo build")<cr>
+" 'rust check' (change to cargo check if clippy gets annoying
+map <leader>rc :VimuxRunCommand("cargo clippy")<cr>
+
+" Python commands
+" 'python run'
+map <leader>pp :VimuxRunCommand("ipython " . bufname("%"))<cr>
+
 " Lots of settings from: https://github.com/amix/vimrc/blob/master/vimrcs/basic.vim
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -296,6 +326,13 @@ endif
 " Always show current position
 set ruler
 
+" Enable line numbers (absolute on current line, relative elsewhere)
+set number
+set relativenumber
+
+" Always show cursor line
+set cursorline
+
 " Height of the command bar (COC recommends 2 but it annoys me)
 set cmdheight=1
 
@@ -335,9 +372,6 @@ set novisualbell
 set t_vb=
 set tm=500
 
-" Enable line numbers (absolute on current line, relative elsewhere)
-set number
-set relativenumber
 
 " Set cursor by mode from https://vim.fandom.com/wiki/Change_cursor_shape_in_different_modes
 " Had issues with cursor disappearing
