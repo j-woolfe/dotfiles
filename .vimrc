@@ -154,6 +154,7 @@ call coc#add_extension(
         \'coc-snippets',
         \'coc-python',
         \'coc-rust-analyzer',
+        \'coc-clangd',
         \)
 
 " Rainbow Parens enable and set colours
@@ -232,7 +233,11 @@ map <leader>pp :VimuxRunCommand("ipython " . bufname("%"))<cr>
 "   -O0: set optimization to fastest and easiest debugging
 "   -lm: always link the math library
 "   -0: set output name to same as file with .out
-let b:clangcommand = "clang -O0 -lm " . bufname("%") . " -o " . expand("%:r") . ".out "
+" autocmd FileType c,cpp 
+
+let b:clangcommand = "clang -O0 -lm " . expand("%:p") . " -o " . expand("%:p:r") . ".out "
+
+autocmd FileType c,cpp let b:clangcommand = "clang -O0 -lm " . expand("%:p") . " -o " . expand("%:p:r") . ".out "
 
 " 'C prompt' for editing command
 fun! EditClangCommand()
@@ -253,7 +258,7 @@ map <leader>cp :call EditClangCommand() <bar> :call ClangCompile() <cr>
 map <leader>cb  :call ClangCompile()<cr>
 
 " 'C compile' (and run)
-map <leader>cc  :call ClangCompile() <bar> :VimuxRunCommand("./" . expand("%:r") . ".out") <cr>
+map <leader>cc  :call ClangCompile() <bar> :VimuxRunCommand(expand("%:p:r") . ".out") <cr>
 
 " Lots of settings from: https://github.com/amix/vimrc/blob/master/vimrcs/basic.vim
 
