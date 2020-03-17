@@ -227,6 +227,34 @@ map <leader>rc :VimuxRunCommand("cargo clippy")<cr>
 " 'python run'
 map <leader>pp :VimuxRunCommand("ipython " . bufname("%"))<cr>
 
+" C commands
+" Flags
+"   -O0: set optimization to fastest and easiest debugging
+"   -lm: always link the math library
+"   -0: set output name to same as file with .out
+let b:clangcommand = "clang -O0 -lm " . bufname("%") . " -o " . expand("%:r") . ".out "
+
+" 'C prompt' for editing command
+fun! EditClangCommand()
+    call inputsave()
+    let b:clangcommand = input("", b:clangcommand)
+    call inputrestore()
+    redraw
+endfun
+
+fun! ClangCompile()
+    echo "Ran command: " . b:clangcommand
+    VimuxRunCommand(b:clangcommand)
+endfun
+
+map <leader>cp :call EditClangCommand() <bar> :call ClangCompile() <cr>
+
+" 'C build'
+map <leader>cb  :call ClangCompile()<cr>
+
+" 'C compile' (and run)
+map <leader>cc  :call ClangCompile() <bar> :VimuxRunCommand("./" . expand("%:r") . ".out") <cr>
+
 " Lots of settings from: https://github.com/amix/vimrc/blob/master/vimrcs/basic.vim
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -305,8 +333,8 @@ set display+=lastline
 " => VIM user interface
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Toggle ColorColumn at 88 chars
-" Bound to <leader>cc
-nnoremap <silent> <leader>cc :execute "set colorcolumn=" . (&colorcolumn == "" ? "88" : "")<CR>
+" Bound to <leader>cl (Colour Line?)
+nnoremap <silent> <leader>cl :execute "set colorcolumn=" . (&colorcolumn == "" ? "88" : "")<CR>
 
 " Keep 7 lines on screen
 set scrolloff=7
