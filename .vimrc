@@ -72,16 +72,21 @@ call plug#end()
 " ALE
 " Config Linters
 " Enable pyflakes linter for python
-" Disable asm linting to use MIPS
 " Use RLS for rust
 " Use clangtidy for c/c++
 let g:ale_linters = {
             \'python': ['pyflakes'],
-            \'asm' : [],
             \'rust': ['rls'],
             \'c': ['clangtidy'],
             \'cpp': ['clangtidy'],
+            \'tex': ['lacheck'],
             \}
+
+" Only run linters listed explicitly
+let g:ale_linters_explicit = 1
+
+" Show linter in error message format
+let g:ale_echo_msg_format = '[%linter%] %code: %%s'
 
 " Enable rust clippy support if installed
 let g:ale_rust_rls_config = { 
@@ -207,6 +212,9 @@ let g:tex_conceal = ""
 " Compile on save
 autocmd FileType tex autocmd BufWritePre <buffer> :VimtexCompile
 
+" Use latex by default instead of plaintex
+let g:tex_flavor = 'latex'
+
 " Don't auto update tmuxline when opening vim to avoid overwriting snapshot
 let g:airline#extensions#tmuxline#enabled = 0
 
@@ -233,7 +241,6 @@ map <leader>pp :VimuxRunCommand("ipython " . bufname("%"))<cr>
 "   -O0: set optimization to fastest and easiest debugging
 "   -lm: always link the math library
 "   -0: set output name to same as file with .out
-" autocmd FileType c,cpp 
 
 let b:clangcommand = "clang -O0 -lm " . expand("%:p") . " -o " . expand("%:p:r") . ".out "
 
@@ -442,7 +449,7 @@ try
 catch
 endtry
 
-" Set UTF-8 as standard enconding
+" Set UTF-8 as standard encoding
 set encoding=utf-8
 
 
