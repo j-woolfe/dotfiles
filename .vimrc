@@ -70,6 +70,16 @@ call plug#end()
 " => Plugin Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ALE
+" Only run linters listed explicitly
+let g:ale_linters_explicit = 1
+
+" Show linter in error message format
+let g:ale_echo_msg_format = '[%linter%] %code: %%s'
+
+" Use quickfix window instead of local list
+let g:ale_set_loclist = 0
+let g:ale_set_quickfix = 1
+
 " Config Linters
 " Enable pyflakes linter for python
 " Use RLS for rust
@@ -81,12 +91,6 @@ let g:ale_linters = {
             \'cpp': ['clangtidy'],
             \'tex': ['lacheck'],
             \}
-
-" Only run linters listed explicitly
-let g:ale_linters_explicit = 1
-
-" Show linter in error message format
-let g:ale_echo_msg_format = '[%linter%] %code: %%s'
 
 " Enable rust clippy support if installed
 let g:ale_rust_rls_config = { 
@@ -339,6 +343,28 @@ endif
 
 " Fix @ symbols at end of file if line is wrapped
 set display+=lastline
+
+" Toggle quickfix window
+function! QuickFix_toggle()
+  for i in range(1, winnr('$'))
+    let bnum = winbufnr(i)
+    if getbufvar(bnum, '&buftype') == 'quickfix'
+      cclose
+      return
+    endif
+  endfor
+
+  if exists("b:vimtex")
+    VimtexErrors
+  else
+    copen
+  endif
+endfunction
+
+" Bindings for quickfix inspired by unimpaired
+nnoremap <silent> [oq :copen<cr>
+nnoremap <silent> ]oq :cclose<cr>
+nnoremap <silent> yoq :call QuickFix_toggle()<cr>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
