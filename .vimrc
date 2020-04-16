@@ -466,6 +466,12 @@ syntax on
 " Uses syntax file from https://github.com/harenome/vim-mipssyntax put into vim-polyglot /syntax
 au BufRead,BufNewFile *.asm set filetype=mips
 
+" Set .v files to use verilog syntax highlighting
+au BufRead,BufNewFile *.v set filetype=verilog
+
+" Disable strange hiding of characters
+set conceallevel=0
+
 " Enable 256 colors palette
 set t_Co=256
 
