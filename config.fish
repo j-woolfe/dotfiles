@@ -2,6 +2,9 @@
 # source ~/anaconda3/etc/fish/conf.d/conda.fish
 
 # set -U PATH /home/linuxbrew/.linuxbrew/bin $PATH
+set -gx PATH /$PATH /usr/local/intelFPGA_lite/19.1/quartus/bin/ 
+set -gx PATH /$PATH /usr/local/intelFPGA_lite/19.1/nios2eds/bin/ 
+set -gx PATH /$PATH /usr/local/intelFPGA_lite/19.1/University_Program/Monitor_Program/bin/ 
 
 # FZF settings
 set -gx FZF_DEFAULT_COMMAND 'rg --files --no-ignore --follow --glob \'!.git/*\''
