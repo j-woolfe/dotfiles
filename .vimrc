@@ -238,7 +238,10 @@ map <leader>rc :VimuxRunCommand("cargo clippy")<cr>
 
 " Python commands
 " 'python run'
-map <leader>pp :VimuxRunCommand("ipython " . bufname("%"))<cr>
+map <leader>pp :VimuxRunCommand("ipython " . expand("%:p"))<cr>
+
+" 'python run'
+map <leader>pi :VimuxRunCommand("ipython -i " . expand("%:p"))<cr>
 
 " C commands
 " Flags
