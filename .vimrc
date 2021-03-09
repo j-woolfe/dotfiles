@@ -50,6 +50,8 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
 " Language support
+" Disable Latex-box from vim-polyglot and use vimtex instead
+let g:polyglot_disabled = ['latex']
 Plug 'sheerun/vim-polyglot'
 
 " Latex Integration
