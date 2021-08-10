@@ -92,6 +92,8 @@ let g:ale_linters = {
             \'c': ['clangtidy'],
             \'cpp': ['clangtidy'],
             \'tex': ['lacheck'],
+            \'javascript': ['eslint'],
+            \'ts': ['eslint'],
             \}
 
 " Enable rust clippy support if installed
@@ -108,6 +110,8 @@ let g:ale_fixers = {
             \'rust': ['rustfmt'],
             \'c': ['clang-format'],
             \'cpp': ['clang-format'],
+            \'javascript': ['eslint'],
+            \'ts': ['eslint'],
             \}
 
 " Config clang-format to use 4 spaces
@@ -166,6 +170,8 @@ call coc#add_extension(
         \'coc-python',
         \'coc-rust-analyzer',
         \'coc-clangd',
+        \'coc-eslint',
+        \'coc-tsserver',
         \)
 
 " Rainbow Parens enable and set colours
@@ -251,9 +257,9 @@ map <leader>pi :VimuxRunCommand("ipython -i " . expand("%:p"))<cr>
 "   -lm: always link the math library
 "   -0: set output name to same as file with .out
 
-let b:clangcommand = "clang -O0 -lm " . expand("%:p") . " -o " . expand("%:p:r") . ".out "
+let b:clangcommand = "clang++ -O0 -lm " . expand("%:p") . " -o " . expand("%:p:r") . ".out "
 
-autocmd FileType c,cpp let b:clangcommand = "clang -O0 -lm " . expand("%:p") . " -o " . expand("%:p:r") . ".out "
+autocmd FileType c,cpp let b:clangcommand = "clang++ -O0 -lm " . expand("%:p") . " -o " . expand("%:p:r") . ".out "
 
 " 'C prompt' for editing command
 fun! EditClangCommand()
