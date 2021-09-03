@@ -2,9 +2,9 @@
 " => Vim-Plug
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Install vim-plug if not already installed
-if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
+if empty(glob(data_dir . '/autoload/plug.vim'))
+  silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
@@ -93,7 +93,7 @@ let g:ale_linters = {
             \'cpp': ['clangtidy'],
             \'tex': ['lacheck'],
             \'javascript': ['eslint'],
-            \'ts': ['eslint'],
+            \'typescript': ['eslint'],
             \}
 
 " Enable rust clippy support if installed
@@ -111,7 +111,7 @@ let g:ale_fixers = {
             \'c': ['clang-format'],
             \'cpp': ['clang-format'],
             \'javascript': ['eslint'],
-            \'ts': ['eslint'],
+            \'typescript': ['prettier'],
             \}
 
 " Config clang-format to use 4 spaces
@@ -403,9 +403,8 @@ endif
 " Always show current position
 set ruler
 
-" Enable line numbers (absolute on current line, relative elsewhere)
+" Enable line numbers
 set number
-set relativenumber
 
 " Always show cursor line
 set cursorline
@@ -531,13 +530,14 @@ set smarttab
 set shiftwidth=4
 set tabstop=4
 
-" Linebreak on 500 characters
+" Linebreak on 88 characters
 set lbr
-set tw=500
+set tw=88
 
 set ai "Auto indent
 set si "Smart indent
 set wrap "Wrap lines
+
 
 """"""""""""""""""""""""""""""
 " => Visual mode related

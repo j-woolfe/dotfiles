@@ -15,6 +15,7 @@ fish_print_git_action.fish --> ~/.config/fish/functions/fish_print_git_action.fi
 
 Vim colour theme:
 molokaiTransparent.vim --> /.vim/colors/molokaiTransparent.vim
+molokaiTransparent.vim --> /.config/nvim/colors/molokaiTransparent.vim
 
 Vim-Airline theme:
 modified_murmur --> ~/.vim/plugged/vim-airline-themes/autoload/airline/themes/modified_murmur.vim
