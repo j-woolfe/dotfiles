@@ -10,8 +10,6 @@ endif
 
 call plug#begin('~/.vim/plugged')
 
-" Rainbow Brackets
-Plug 'luochen1990/rainbow'
 
 " tpope goodness
 Plug 'tpope/vim-unimpaired'
@@ -19,6 +17,7 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-commentary'
 
 " Airline statusline and themes
 Plug 'vim-airline/vim-airline'
@@ -37,8 +36,15 @@ Plug 'neovim/nvim-lspconfig'
 
 " Autocomplete
 Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
+
 " Snippets
 Plug 'ms-jpq/coq.artifacts', {'branch': 'artifacts'}
+
+" Colour diagnostic messages
+Plug 'folke/lsp-colors.nvim'
+
+" Diagnostic icons and popup
+Plug 'folke/trouble.nvim'
 
 " Syntax highlighting
 Plug 'sheerun/vim-polyglot'
@@ -46,16 +52,33 @@ Plug 'sheerun/vim-polyglot'
 " Split navigation
 Plug 'numToStr/Navigator.nvim'
 
+" Markdown preview
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+
+" Improved Markdown support
+Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown'
+
+" Treesitter
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+
+" Rainbow Brackets
+Plug 'luochen1990/rainbow'
+" For treesitter languages
+Plug 'p00f/nvim-ts-rainbow'
+
 call plug#end()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin Config
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-" Rainbow parens
-" Enable and set colours
-let g:rainbow_active = 1
-let g:rainbow_conf = {'ctermfgs': [4, 2, 3, 6, 1]}
+" Set colors to molokai transparent from https://github.com/Znuff/molokai
+try
+    " set t_Co=256
+    colorscheme molokaiTransparent
+    "colorscheme tokyonight
+catch
+endtry
 
 " Airline
 " Theme and font
@@ -92,6 +115,7 @@ nnoremap <c-F> <cmd>lua require('fzf-lua').grep_curbuf()<CR>
 " COQ and LSP
 " Autostart COQ
 let g:coq_settings = { 'auto_start': 'shut-up' }
+let g:coq_settings.keymap = { 'jump_to_mark': '<c-s>' }
 
 lua << EOF
 -- LSP Config
@@ -112,10 +136,10 @@ local on_attach = function(client, bufnr)
     buf_set_keymap('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
     buf_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
     buf_set_keymap('n', '<leader>k', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-    -- [g]o [d]efinition (Use <C-o> to get back)
-    buf_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
-    -- [g]o [D]eclaration
+    -- [g]o [d]eclaration
     buf_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+    -- [g]o [D]efinition (Use <C-o> to get back)
+    buf_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
     -- <leader>e goto next [e]rror (E for prev)
     buf_set_keymap('n', '<leader>e', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts) 
     buf_set_keymap('n', '<leader>E', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
@@ -136,6 +160,7 @@ local servers = {
     'tsserver',                             -- js/ts
     'rust_analyzer',                        -- Rust
     'pyright',                              -- Python
+    'texlab',                               -- LaTeX
 }
 
 for _, lsp in ipairs(servers) do
@@ -146,6 +171,32 @@ for _, lsp in ipairs(servers) do
     }
   }))
 end
+EOF
+
+" lsp-colors defaults
+lua << EOF
+-- require("lsp-colors").setup({
+    --Error = "#f4005f",
+--    Error = "#ffffff",
+--   Warning = "#fa8419",
+--    Information = "#9f65ff",
+--    Hint = "#98e024"
+--})
+EOF
+
+" Use default trouble.nvim settings
+lua << EOF
+--require("trouble").setup({
+--    signs = {
+--        -- icons / text used for a diagnostic
+--        error = "",
+--        warning = "",
+--        hint = "",
+--        information = "",
+--        other = "﫠"
+--    },
+--    use_lsp_diagnostic_signs = false -- enabling this will use the signs defined in your lsp client
+--})
 EOF
 
 " Navigator.nvim
@@ -165,6 +216,44 @@ map('n', "<C-j>", "<CMD>lua require('Navigator').down()<cr>", opts)
 map('n', "<C-k>", "<CMD>lua require('Navigator').up()<cr>", opts)
 map('n', "<C-l>", "<CMD>lua require('Navigator').right()<cr>", opts)
 EOF
+
+" Markdown Preview
+" Open in chrome
+let g:mkdp_browser = 'google-chrome-stable'
+
+" Highlight Latex in markdown
+let g:vim_markdown_math = 1
+
+" Treesitter
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+    ensure_installed = "maintained",
+    highlight = {
+        enable = true,
+        disable = {"haskell"},
+        additional_vim_regex_highlighting = false,
+        },
+    -- Rainbow parens
+    rainbow = {
+        enable = true,
+        extended_mode = true,
+        termcolors = {
+            "8",
+            "4",
+            "2",
+            "3",
+            "6",
+            "1",
+            "2",
+            }
+        },
+    }
+EOF
+
+" Rainbow parens
+" Enable and set colours
+let g:rainbow_active = 1
+let g:rainbow_conf = {'ctermfgs': [4, 2, 3, 6, 1]}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
@@ -223,19 +312,17 @@ set lazyredraw
 set showmatch
 set mat=2
 
-" Set colors to molokai transparent from https://github.com/Znuff/molokai
-try
-  colorscheme molokaiTransparent
-catch
-endtry
-
 " Use 4 spaces instead of tabs
 set expandtab
 set shiftwidth=4
 set tabstop=4
 
+" Use 2 spaces in Haskell
+autocmd FileType haskell setlocal tabstop=2 shiftwidth=2 softtabstop=2
+
 " Return to last edit position when opening files
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Keymaps
@@ -285,6 +372,9 @@ endfunction
 " Remap VIM 0 to first non-blank character
 map 0 ^
 
+" Exit terminal mode normally
+tnoremap <Esc> <C-\><C-n>
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Might be needed
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -309,10 +399,11 @@ map 0 ^
 " Vimspector debugger
 " Check/setup clippy with rust_analyzer
 " clangd language server (need to setup makefiles or something)
+" Loclist for errors? trouble?
+" Fix signs
 "
 " TODO MAYBE
 " Quickfix bindings/toggle (in .vimrc)
-" Loclist for errors?
 " Delete trailing whitespace on save
 " Setup Lua LSP (sumneko_lua)
 "
@@ -330,7 +421,12 @@ map 0 ^
 "  capabilities = capabilities,
 "  }))
 "end
-
+"
+" " Conceal Markdown emphasis
+" autocmd BufRead,BufNewFile *.md
+"     \ set conceallevel=2
+"
+"
 "" Use vim config
 " set runtimepath^=~/.vim runtimepath+=~/.vim/after
 " let &packpath = &runtimepath
