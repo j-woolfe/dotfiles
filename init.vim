@@ -34,6 +34,9 @@ Plug 'kyazdani42/nvim-web-devicons'
 " LSP
 Plug 'neovim/nvim-lspconfig'
 
+" Install LSP Servers
+Plug 'williamboman/nvim-lsp-installer'
+
 " Autocomplete
 Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
 
@@ -121,6 +124,7 @@ lua << EOF
 -- LSP Config
 local nvim_lsp = require "lspconfig"
 local coq = require "coq"
+local lsp_installer = require "nvim-lsp-installer"
 
 -- Based on https://github.com/neovim/nvim-lspconfig example config
 -- Defines a number of generic LSP keybinds
@@ -136,10 +140,10 @@ local on_attach = function(client, bufnr)
     buf_set_keymap('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
     buf_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
     buf_set_keymap('n', '<leader>k', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-    -- [g]o [d]eclaration
-    buf_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-    -- [g]o [D]efinition (Use <C-o> to get back)
-    buf_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+    -- [g]o [d]efinition (Use <C-o> to get back)
+    buf_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+    -- [g]o [D]eclaration
+    buf_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
     -- <leader>e goto next [e]rror (E for prev)
     buf_set_keymap('n', '<leader>e', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts) 
     buf_set_keymap('n', '<leader>E', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
@@ -151,26 +155,17 @@ local on_attach = function(client, bufnr)
 
 end
 
--- Use a loop to conveniently call 'setup' on multiple servers and
--- map buffer local keybindings when the language server attaches
--- NOTE: Using coq.lsp_ensure_capabilities for autocomplete compatibility
-local servers = { 
-    'vimls',                                -- vim
-    'hls',                                  -- Haskell
-    'tsserver',                             -- js/ts
-    'rust_analyzer',                        -- Rust
-    'pyright',                              -- Python
-    'texlab',                               -- LaTeX
-}
-
-for _, lsp in ipairs(servers) do
-  nvim_lsp[lsp].setup( coq.lsp_ensure_capabilities({
-    on_attach = on_attach,
-    flags = {
-      debounce_text_changes = 150,
+lsp_installer.on_server_ready( function (server)
+    local opts = {
+        on_attach = on_attach,
+        flags = {
+            debounce_text_changes = 150
+        }
     }
-  }))
-end
+
+    server:setup(coq.lsp_ensure_capabilities(opts))
+end)
+
 EOF
 
 " lsp-colors defaults
