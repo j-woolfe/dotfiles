@@ -2,6 +2,7 @@
 
 Vim config:
 .vimrc --> ~/.vimrc
+init.vim --> ~/.config/nvim/init.vim
 
 Fish Config:
 config.fish --> ~/.config/fish/config.fish
@@ -22,7 +23,7 @@ modified_murmur --> ~/.vim/plugged/vim-airline-themes/autoload/airline/themes/mo
 
 Kitty config:
 Requires Fira Code font
-kitty.cong --> ~/.config/kitty/kitty.conf
+kitty.conf --> ~/.config/kitty/kitty.conf
 
 Ranger config:
 Requires trash-cli
