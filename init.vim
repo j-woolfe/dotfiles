@@ -126,6 +126,16 @@ local nvim_lsp = require "lspconfig"
 local coq = require "coq"
 local lsp_installer = require "nvim-lsp-installer"
 
+-- Diagnostics (0.6+)
+-- vim.diagnostic.config({
+--    virtual_text = false
+-- })
+
+vim.o.updatetime = 250
+-- vim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]]
+--}
+
+
 -- Based on https://github.com/neovim/nvim-lspconfig example config
 -- Defines a number of generic LSP keybinds
 -- call on_attach in the setup to each LSP
